@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ShowHistory</title>
+<style type="text/css">
+	body {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	img, .img{
+		width: 30px;
+		height: 30px;
+	}
+	tr {
+		width: 100%;
+	}
+	folder, file {
+	}
+	a {
+		text-decoration: none;
+	}
+	.tab {
+		display:inline-block; 
+		width: 30px;
+	}
+	.filename {
+		display: flex;
+		align-items: center;
+	}
+	.list {
+		width: 100%;
+	}
+	.list_td {
+		width: 100%;
+		background-color: pink;
+		padding: 0px;
+	}
+	.view {
+		/*height: 550px;*/
+		width: 100%;
+	}
+	.file {
+		width: 33%;
+	}
+	#folder {
+		width: 28%;
+	}
+	#folder > tbody > tr > td {
+		border: 1px solid black;
+	}
+	#view {
+		width: 70%;
+	}
+	#view > tbody > tr > td {
+		border: 1px solid black;
+	}
+	#button {
+		text-align: center;
+		height: 30px;
+	}
+	#b_lef {
+		float: left;
+	}
+	#b_mid {
+
+	}
+	#b_rig {
+		float: right;
+	}
+	#head {
+		width: 100%;
+		height: 65px;
+	}
+	#head  > h1 {
+		display: inline;
+	}
+	#lef_head {
+		float: left;
+	}
+	#lef_head > img {
+		width: 60px;
+		height: 60px;
+	}
+	#rig_head {
+		float: right;
+		margin-right: 5%;
+	}
+	#rig_head > a > button {
+		padding: 8px;
+		font-size: 20px;
+	}
+</style>
+</head>
+<body>
+<header id="head">
+	<div id="lef_head">
+		<%= image_tag("logo-dhbk-DN.jpg") %>
+	</div>
+	<h1>Detect Similar Code</h1>
+	<div id="rig_head">
+		<a href="/sourcecode">
+			<button>Source Code</button>
+		</a>
+		<a href="/history">
+			<button>History</button>
+		</a>
+	</div>
+</header>
+<table id="folder">
+	<tr>
+		<th>
+			Folder
+		</th>
+	</tr>
+	<tr>
+		<td id="button">
+<!-- 				<a href= <%="history?file_name="%> >
+					<button id="b_lef">Back</button>
+				</a>
+				<a href= <%="detect?source=#{URI.escape(@link+"/"+@file_name)}"%> >
+					<button id="b_mid">Detect</button>
+				</a> -->
+				<a href= <%="result?folder=#{URI.escape(@file_name)}"%> >
+					<button id="b_rig">Enter</button>
+				</a>
+		</td>
+	</tr>
+	<tr>
+	<td>
+	<table class="list">
+	<%	@ls_dir.each{ |i|									%>
+		<tr>
+			<td class="list_td">
+				<a href= <%="history?file_name=#{URI.escape(i)}"%> >
+				<div onclick="showFile('<%=i%>')" class="filename">
+					<%= image_tag("folder.png") %>
+					<folder>
+						<%= i %>
+					</folder>
+				</div>
+				</a>
+			</td>
+		</tr>
+	<%	}													%>
+	</table>
+	</td>
+	</tr>
+</table>
+
+<table id="view">
+	<tr>
+		<th>
+			View
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<table class="view">
+	<%			if @kt										%>
+	<%					(0..@dir_view.length-1).each{ |i|	%>
+	<%						if( i%3 == 0 )					%>
+								<tr>
+	<%						end								%>
+								<td class="file">
+									<div>
+										<%= @dir_view[i] %>
+									</div>
+								</td>
+	<%						if( i%3 == 2 || i == @dir_view.length-1 )%>
+								</tr>
+	<%						end								%>
+	<%					}									%>
+	<%			end											%>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<input type="hidden" id="link" value=<%= @link %> >
+
+<script type="text/javascript">
+	function showFile(file_name) {
+		var link = document.getElementById('link').value;
+		var params = ''
+		console.log(link+file_name);
+	}
+
+	function getLink(){
+		// console.log("ok");
+		var file = document.getElementById('file');
+		// console.log(file.value);
+		var link = file.value;
+		var j = link.length;
+		for( ; j > 0; j--){
+			if( link[j] == '\\' ) break;
+		}
+		console.log(link.substr(0,j));
+	}
+</script>
+</body>
+</html>

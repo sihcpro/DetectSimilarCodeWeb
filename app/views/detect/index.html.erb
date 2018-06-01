@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Detect</title>
+<style type="text/css">
+	body {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	img, .img{
+		width: 30px;
+		height: 30px;
+	}
+	tr {
+		width: 100%;
+	}
+	folder, file {
+	}
+	a {
+		text-decoration: none;
+	}
+	h1 {
+		width: 100%;
+		text-align: center;
+	}
+	form {
+		margin-left:  30%;
+	}
+	.tab {
+		display:inline-block; 
+		width: 30px;
+	}
+	.filename {
+		display: flex;
+		align-items: center;
+	}
+	.list {
+		width: 100%;
+	}
+	.list_td {
+		width: 100%;
+		background-color: pink;
+		padding: 0px;
+	}
+	.view {
+		/*height: 550px;*/
+		width: 100%;
+	}
+	.file {
+		width: 33%;
+	}
+	#folder {
+		width: 28%;
+	}
+	#folder > tbody > tr > td {
+		border: 1px solid black;
+	}
+	#view {
+		width: 70%;
+	}
+	#view > tbody > tr > td {
+		border: 1px solid black;
+	}
+	#button {
+		text-align: center;
+		height: 30px;
+	}
+	#button_start {
+		font-size: 20px;
+		margin-top: 20px;
+		padding: 8px;
+	}
+	#b_lef {
+		float: left;
+	}
+	#b_mid {
+
+	}
+	#b_rig {
+		float: right;
+	}
+	#start {
+		text-align: center;
+	}
+	#head {
+		width: 100%;
+		height: 65px;
+	}
+	#head  > h1 {
+		display: inline;
+	}
+	#lef_head {
+		float: left;
+	}
+	#lef_head > img {
+		width: 60px;
+		height: 60px;
+	}
+	#rig_head {
+		float: right;
+		margin-right: 5%;
+	}
+	#rig_head > a > button {
+		padding: 8px;
+		font-size: 20px;
+	}
+</style>
+</head>
+<body>
+	<header id="head">
+		<div id="lef_head">
+			<%= image_tag("logo-dhbk-DN.jpg") %>
+		</div>
+		<h1>Detect Similar Code</h1>
+		<div id="rig_head">
+			<a href="/sourcecode">
+				<button>Source Code</button>
+			</a>
+			<a href="/history">
+				<button>History</button>
+			</a>
+		</div>
+	</header>
+	<h1>Detect Similar</h1>
+	<form method="POST" action="detect">
+		<div>
+			<p>Source detect</p>
+			<div>
+				<span>Folder name :</span>
+				<input type="text" name="source" value= <%=@source%> readonly>
+				<a href="sourcecode">
+					<button>Edit</button>
+				</a>
+			</div>
+		</div>
+		<div>
+			<p>Result detect</p>
+			<div>
+				<span>Folder name :</span>
+				<input type="text" name="result" value="">
+			</div>
+		</div>
+		<div id="start">
+			<input type="hidden" name="action" value="start">
+			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+			<input type="submit" value="Start" id="button_start">
+		</div>
+	</form>
+</body>
+</html>

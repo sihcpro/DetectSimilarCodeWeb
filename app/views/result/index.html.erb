@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Result</title>
+<style type="text/css">
+	body {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	td {
+		vertical-align: top;
+		text-align: left;
+		border: 1px solid black;
+		width: 50%;
+		padding: 0px;
+	}
+	copy, p {
+		padding: 5px;
+		display: block;
+		margin: 0px 0px;
+	}
+	p {
+		background-color: #b9ff5a;
+	}
+	a {
+		text-decoration: none;
+	}
+	copy {
+		background-color: #ff9081;
+	}
+	.tab {
+		display:inline-block; 
+		width: 30px;
+	}
+	#result {
+		width: 30%;
+	}
+	#compare2file {
+		width: 70%;
+		height: 100%;
+	}
+	#filename > td {
+	}
+	#head {
+		width: 100%;
+		height: 65px;
+	}
+	#head  > h1 {
+		display: inline;
+	}
+	#lef_head {
+		float: left;
+	}
+	#lef_head > img {
+		width: 60px;
+		height: 60px;
+	}
+	#rig_head {
+		float: right;
+		margin-right: 5%;
+	}
+	#rig_head > a > button {
+		padding: 8px;
+		font-size: 20px;
+	}
+</style>
+</head>
+<body>
+	<header id="head">
+		<div id="lef_head">
+			<%= image_tag("logo-dhbk-DN.jpg") %>
+		</div>
+		<h1>Detect Similar Code</h1>
+		<div id="rig_head">
+			<a href="/sourcecode">
+				<button>Source Code</button>
+			</a>
+			<a href="/history">
+				<button>History</button>
+			</a>
+		</div>
+	</header>
+	<table id="result">
+	<tr>
+		<th>
+			Result
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<a href= <%= "/history?file_name=#{URI.escape(@folder)}"%> >
+				<button>
+					Back to History
+				</button>
+			</a>
+		</td>
+	</tr>
+	<%	@ls.each{ |i|										%>
+			<tr>
+				<td>
+					<a href= <%="?folder=#{URI.escape(@folder)}&id=#{i}"%> >
+						<div>
+						<%= i %>
+						</div>
+					</a>
+				</td>
+			</tr>
+	<%	}													%>
+</table>
+<table id="compare2file">
+	<tr id="filename">
+		<th>
+			<%= @criminal_name %>
+		</th>
+		<th>
+			<%= @victim_name %>
+		</th>
+	</tr>
+	<tr id="code">
+		<td id="criminal">
+	<% 		@dataline[0].each{ |i|
+				tmp = i
+				if ( i[0..10] == "/*copied */" )			%>
+					<copy>
+	<%				tmp = tmp[11..-1]						%>
+	<%			else										%>
+					<p>
+	<%			end
+				tmp = tmp.split("\t")						%>
+				<%= tmp[0] %>
+	<%			if( tmp.length > 1 )
+					tmp[1..-1].each{ |j|					%>
+						<span class="tab"></span>
+						<%= j %>
+	<%				}
+				end
+				if ( i[0..10] == "/*copied */" )			%>
+					</copy>
+	<%			else										%>
+					</p>
+	<%			end
+			}												%>
+		</td>
+		<td id="victim">
+	<% 		@dataline[1].each{ |i|
+				tmp = i
+				if ( i[0..10] == "/*copied */" )			%>
+					<copy>
+	<%				tmp = tmp[11..-1]						%>
+	<%			else										%>
+					<p>
+	<%			end
+				tmp = tmp.split("\t")						%>
+				<%= tmp[0] %>
+	<%			if( tmp.length > 1 )
+					tmp[1..-1].each{ |j|					%>
+						<span class="tab"></span>
+						<%= j %>
+	<%				}
+				end
+				if ( i[0..10] == "/*copied */" )			%>
+					</copy>
+	<%			else										%>
+					</p>
+	<%			end
+			}												%>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

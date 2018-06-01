@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ShowSourceCode</title>
+<style type="text/css">
+	body {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	img, .img{
+		width: 30px;
+		height: 30px;
+	}
+	tr {
+		width: 100%;
+	}
+	folder, file {
+	}
+	a {
+		text-decoration: none;
+	}
+	.tab {
+		display:inline-block; 
+		width: 30px;
+	}
+	.filename {
+		display: flex;
+		align-items: center;
+	}
+	.list {
+		width: 100%;
+	}
+	.list_td {
+		width: 100%;
+		background-color: pink;
+		padding: 0px;
+	}
+	.view {
+		/*height: 550px;*/
+		width: 100%;
+	}
+	.file {
+		width: 33%;
+	}
+	#folder {
+		width: 28%;
+	}
+	#folder > tbody > tr > td {
+		border: 1px solid black;
+	}
+	#view {
+		width: 70%;
+	}
+	#view > tbody > tr > td {
+		border: 1px solid black;
+	}
+	#button {
+		text-align: center;
+		height: 30px;
+	}
+	#b_lef {
+		float: left;
+	}
+	#b_mid {
+
+	}
+	#b_rig {
+		float: right;
+	}
+	#head {
+		width: 100%;
+		height: 65px;
+	}
+	#lef_head {
+		float: left;
+	}
+	#head  > h1 {
+		display: inline;
+	}
+	#lef_head > img {
+		width: 60px;
+		height: 60px;
+	}
+	#rig_head {
+		float: right;
+		margin-right: 5%;
+	}
+	#rig_head > a > button {
+		padding: 8px;
+		font-size: 20px;
+	}
+</style>
+</head>
+<body>
+<header id="head">
+	<div id="lef_head">
+		<%= image_tag("logo-dhbk-DN.jpg") %>
+	</div>
+	<h1>Detect Similar Code</h1>
+	<div id="rig_head">
+		<a href="/sourcecode">
+			<button>Source Code</button>
+		</a>
+		<a href="/history">
+			<button>History</button>
+		</a>
+	</div>
+</header>
+<table id="folder">
+	<tr>
+		<th>
+			Folder
+		</th>
+	</tr>
+	<tr>
+		<td id="button">
+	<%		if @index.length > 0 && @link_arr.length > 0	%>
+				<a href= <%="sourcecode?link=#{URI.escape(@back_link)}&file_name="%> >
+					<button id="b_lef">Back</button>
+				</a>
+	<%		end												%>
+	<%		if @kt && @isDir && @count_cpp > 1				%>
+				<a href= <%="detect?source=#{URI.escape(@link+"/"+@file_name)}"%> >
+					<button id="b_mid">Detect</button>
+				</a>
+	<%		end												%>
+	<%		if ( @kt && @isDir && @file_name != "." )			%>
+				<a href= <%="sourcecode?link=#{URI.escape(@index+"/"+@file_name)}&file_name="%> >
+					<button id="b_rig">Enter</button>
+				</a>
+	<%		end												%>
+		</td>
+	</tr>
+	<tr>
+	<td>
+	<table class="list">
+	<%	@ls_dir.each{ |i|									%>
+		<tr>
+			<td class="list_td">
+				<a href= <%="sourcecode?link=#{URI.escape(@index)}&file_name=#{URI.escape(i)}"%> >
+				<div onclick="showFile('<%=i%>')" class="filename">
+					<%= image_tag("folder.png") %>
+					<folder>
+						<%= i %>
+					</folder>
+				</div>
+				</a>
+			</td>
+		</tr>
+	<%	}													%>
+	<%	@ls_fil.each{ |i|									%>
+		<tr>
+			<td class="list_td">
+				<a href= <%="sourcecode?link=#{URI.escape(@index)}&file_name=#{URI.escape(i)}"%> >
+				<div onclick="showFile('<%=i%>')" class="filename">
+					<span class="img"></span>
+					<file>
+						<%= i %>
+					</file>
+				</div>
+				</a>
+			</td>
+		</tr>
+	<%	}													%>
+	</table>
+	</td>
+	</tr>
+</table>
+
+<table id="view">
+	<tr>
+		<th>
+			View
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<table class="view">
+	<%			if @kt										
+					if @isDir								%>
+	<%					(0..@dir_view.length-1).each{ |i|	%>
+	<%						if( i%3 == 0 )					%>
+								<tr>
+	<%						end								%>
+								<td class="file">
+									<div>
+										<%= @dir_view[i] %>
+									</div>
+								</td>
+	<%						if( i%3 == 2 || i == @dir_view.length-1 )%>
+								</tr>
+	<%						end								%>
+	<%					}									%>
+	<%				else									%>
+						<tr>
+							<td>
+	<%						@fil_view.each{ |i|				%>
+								<p>
+	<%								begin
+										tmp = i.split("\t")	
+									rescue
+										tmp = [tmp]
+										%><%= "Can't read this file!" %><%
+									end						%>
+									<%= tmp[0] %>
+	<%								if( tmp.length > 1 )
+										tmp[1..-1].each{ |j|%>
+											<span class="tab"></span>
+											<%= j %>
+	<%									}					%>
+	<%								end						%>
+								</p>
+	<%						}								%>
+							</td>
+						</tr>
+	<%				end										%>
+	<%			end											%>
+			</table>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>
